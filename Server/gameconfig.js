@@ -13,4 +13,4 @@ module.exports = {
 	"FreeMode": false,              //是否是体验场
 	"FreeModeMoney": 10000000,      //体验房初始金额
 	"FreeModeMinScore": 500000      //体验房能坐下继续游戏的最小分数 根据游戏规则自己定义，比如 牛牛 底分*5倍
-}
+};
