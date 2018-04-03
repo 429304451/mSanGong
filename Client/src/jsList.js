@@ -1,6 +1,7 @@
 
 var jsListFramework = [
-
+	"src/extend/Storage.js",
+    "src/extend/CCNodeExtend.js",
 ];
 
 var jsListGame = [
