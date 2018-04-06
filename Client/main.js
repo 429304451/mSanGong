@@ -82,22 +82,39 @@ cc.game.onStart = function(){
     if(cc.sys.isNative)
         cc.Image.setPVRImagesHavePremultipliedAlpha(true);
 
-    var start = function() {
-        cc.LoaderScene.preload(g_resources, function() {
-            cc.director.runScene(new HelloWorldScene());
-        }, this);
+    // var start = function() {
+    //     cc.LoaderScene.preload(g_resources, function() {
+    //         cc.director.runScene(new HelloWorldScene());
+    //     }, this);
+    // };
+
+    var start = function () {
+        cc.LoaderScene.preload(g_resources, function(){
+
+            // cc.spriteFrameCache.addSpriteFrames("comRes/common981.plist");
+
+            var arg = {};//ttutil.getArgmuent();
+
+            arg["userid"] = 123;
+            arg["ip"] = "subgame.game036.com";
+            arg["port"] = "1236";
+            arg["uuid"] = "xxx";
+
+            app.runMain(arg.userid, arg.ip, arg.port, arg.uuid);
+        });
     };
 
     if (typeof app == "undefined") {
-        cc.loader.loadJs("src/jsList.js", function() {
-            // var t = setTimeout("alert('5 seconds!')",5000)
-            cc.loader.loadJs(jsListFramework.concat(jsListGame), function() {
-                // var t = setTimeout("alert('5 seconds!')",1000)
-                start()
-            });
-        });
+        // cc.loader.loadJs("src/jsList.js", function() {
+        //     // var t = setTimeout("alert('5 seconds!')",5000)
+        //     cc.loader.loadJs(jsListFramework.concat(jsListGame), function() {
+        //         // var t = setTimeout("alert('5 seconds!')",1000)
+        //         start()
+        //     });
+        // });
+        start();
     } else {
-        star()
+        start();
     }
 
     //load resources

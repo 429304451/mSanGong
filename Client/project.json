@@ -12,6 +12,63 @@
     "modules" : ["cocos2d", "gui", "cocostudio", "editbox", "socketio"],
 
     "jsList" : [
+        "src/extend/Storage.js",
+        "src/extend/CCNodeExtend.js",
+        "src/extend/SoundEngine.js",
+        "src/extend/ToastSystem.js",
+        "src/extend/Util.js",
+        "src/extend/Native.js",
+        "src/extend/ClassPool.js",
+        "src/extend/md5.js",
+        "src/extend/sha1.js",
+        "src/extend/crypto-js.js",
 
+        "src/extend/FocusClick.js",
+        "src/extend/FocusBase.js",
+        "src/extend/FocusListener.js",
+        "src/extend/FocusButton.js",
+        "src/extend/FocusSprite.js",
+        "src/extend/FocusScrollView.js",
+        "src/extend/FocusListView.js",
+        "src/extend/FocusSlider.js",
+        "src/extend/FocusExtend.js",
+        "src/extend/FocusEditBox.js",
+        "src/extend/FocusLoadingScene.js",
+
+        "src/extend/core/ClientKernel.js",
+
+        "src/resource.js",
+        "src/core/define.js",
+        "src/core/ClientUserItem.js",
+        "src/core/GameFrameEngine.js",
+        "src/core/GameUserManager.js",
+
+        "src/logic/GameLogic.js",
+        "src/logic/GameUtil.js",
+        "src/logic/Player.js",
+
+        "src/Config.js",
+        "src/Hello.js",
+        "src/app.js",
+
+        "src/component/Card.js",
+        "src/component/CardControl.js",
+        "src/component/UserFrame.js",
+        "src/component/CardType.js",
+
+        "src/layer/MainLayer.js",
+        "src/layer/CardLayer.js",
+        "src/layer/GameEndLayer.js",
+        "src/layer/Timer.js",
+        "src/layer/HelpLayer.js",
+        "src/layer/UILayer.js",
+        "src/layer/ExitLayer.js",
+
+        "src/scene/LoadingScene.js",
+        "src/scene/FocusScene.js",
+        "src/scene/MainScene.js",
+
+        "src/SubGameMSG.js",
+        "src/GameEngine.js"
     ]
 }

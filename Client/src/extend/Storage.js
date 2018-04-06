@@ -55,7 +55,7 @@ p.getValue = function(key) {
 	return this.dataRoot[key];
 };
 
-p.flush = p.saveToFile
+p.flush = p.saveToFile;
 
 
 
