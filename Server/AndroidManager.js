@@ -9,7 +9,7 @@ var ttutil = require("./ttutil");  // 验证数据签名
 function AndroidManager(gameServer) {
     this.androidItemArray = [];
     this.gameServer = gameServer;
-}
+};
 
 var p = AndroidManager.prototype;
 
@@ -105,6 +105,13 @@ p.searchAndroidByUserID = function (userID) {
         }
     }
     return null;
+};
+
+p.allSetReady = function() {
+    console.log("AndroidManager_allSetReady");
+    for (var i = 0; i < this.androidItemArray.length; ++i) {
+        this.androidItemArray[i].sendUserReady(null)
+    }
 };
 
 module.exports = AndroidManager;

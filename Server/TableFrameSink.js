@@ -252,6 +252,8 @@ p.onGameConclude = function () {
 
     this.tableFrame.concludeGame(subGameMSG.GS_FREE);
     this.tableFrame.checkTableUsersScore();
+
+    console.log("TableFrameSink_onGameConclude", gameEnd);
     // 从发牌开始就是全部是机器人 那么就不用对库存有任何影响了
     if (this.gameControl.allAndroid) {
         return;
@@ -285,6 +287,7 @@ p.broadCastGameData = function (subCMD, chairID, data, onlyPlaying) {
 };
 
 p.onTimerOpenCard = function () {
+    console.log("TableFrameSink_onTimerOpenCard时间到自动全部开牌");
     for (var i = 0; i < this.chairCount; ++i) {
         var player = this.player[i];
         if (player.isPlaying && !player.isOpenCard) {
@@ -293,6 +296,7 @@ p.onTimerOpenCard = function () {
         }
     }
 };
+
 /**
  * 场景消息
  * @param chairID 椅子号

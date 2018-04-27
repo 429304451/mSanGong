@@ -95,7 +95,7 @@ p.beginControl = function(cardGroupArray) {
     }
 
     this.allAndroid = allAndroid;
-    console.log("一局开始的发牌", nowGameCount);
+    console.log("GameControl_beginControl一局开始的发牌", nowGameCount);
     nowGameCount = nowGameCount + 1
     // 全是机器人 或者全是真人 直接返回 不需要控制
     if (allAndroid || allPlayer){

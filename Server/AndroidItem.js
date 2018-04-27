@@ -66,7 +66,7 @@ p.sendSocketData = function (subCMD, data) {
  * @returns {boolean}
  */
 p.sendUserReady = function (data) {
-
+    // console.log("AndroidItem_sendUserReady发送用户准备", this.getChairID());
     this.androidUserManager.sendDataToServer(this.serverUserItem, gameCMD.MDM_GF_FRAME, gameCMD.SUB_GF_USER_READY, data);
 };
 

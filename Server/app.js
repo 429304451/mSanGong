@@ -8,7 +8,8 @@ winston.info = function() {
     for (var i = 0; i < arguments.length; i++) {
         argArray.push(arguments[i]);
     }
-    info.apply(this, argArray);
+    // info.apply(this, argArray);
+    console.log(argArray);
 }.bind(winston.info);
 
 var debug = winston.debug;

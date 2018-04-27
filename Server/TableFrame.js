@@ -7,6 +7,8 @@ var corresCMD = require("./define").corresCMD;
 var winston = require('winston');
 var gameconfig = require('./gameconfig');
 var util = require('util');
+
+var continueId = 10
 /**
  * 桌子类
  * @param id 桌子ID
@@ -15,6 +17,7 @@ var util = require('util');
  * @constructor
  */
 function TableFrame(id, roomInfo, gameServer) {
+    this.timeMng = [];   
     //游戏状态
     this.tableID = id; 											        //桌子号
     this.tableUserArray = []; 									        //玩家数组
@@ -27,6 +30,10 @@ function TableFrame(id, roomInfo, gameServer) {
     this.gameServer = gameServer;
     this.tableFrameSink = new TableFrameSink(this, this.roomInfo);		//桌子逻辑操作
     this.startTime = 0;											            //开始时间
+    // 是否在开房倒计时的时间范围内
+    // this.inCountDownTime = false
+    this.onReadyCountDown();
+
 }
 
 
@@ -43,6 +50,8 @@ p.getRoomInfo = function () {
  * 开始游戏
  */
 p.startGame = function () {
+    this.clearAllTimer(); // 其实也就清除自动准备的倒计时 如果还有
+    console.log("TableFrame_startGame", "开始游戏");
     //游戏没有开始且不是百人游戏的时候设置玩家状态
     if (!this.gameStart && this.gameMode != gameConst.START_MODE_HUNDRED) {
         for (var i = 0; i < this.roomInfo["ChairCount"]; ++i) {
@@ -62,6 +71,77 @@ p.startGame = function () {
     this.gameStart = true;
     this.tableFrameSink.onEventStartGame();
 };
+
+// this.setGameTimer(this.autoSetReady, continueId, 20);
+// 两个人以上准备就触发这个倒计时 时间到的时候看看是否有两个以上的人 如果
+// 倒计时结束 房间有超过两个人以上准备就开牌
+p.onReadyCountDown = function() {
+    console.log("广播:10s钟后如果还有人没有准备游戏场上有超过两人也要开始了");
+    this.setGameTimer(this.autoSetReady, continueId, 10);
+};
+
+
+// 准备一个倒计时 时间到有人没准备也强制开始 或者把这个人踢掉
+p.autoSetReady = function () {
+    console.log("TableFrame_autoSetReady", "游戏要继续进行");
+    // 检查房间是否有两个以上的人 有则让他们全部为准备状态
+    // this.tableFrameSink.gameControl.onAllReady();
+    this.gameServer.androidManager.allSetReady()
+    // console.log("gameServer", this.gameServer);
+};
+
+/**
+ * 定时器功能
+ * @param func  定时器回调函数
+ * @param timerID 定时器标识
+ * @param time 定时器时间  1s
+ */
+
+p.setGameTimer = function (func, timerID, time) {
+    var that = this;
+    var args = null;
+    if (arguments.length > 3)
+        args = Array.prototype.slice.call(arguments, 3);    //貌似性能不好？
+
+    this.killGameTimer(timerID);
+    var timer = setTimeout(function () {
+
+        for (var i = 0; i < that.timeMng.length; ++i) {
+            if (that.timeMng[i].value == timer) {
+                that.timeMng.splice(i, 1);
+                break;
+            }
+        }
+        func.apply(that, args);
+    }, time * 1000);
+
+    this.timeMng.push({key: timerID, value: timer});
+};
+
+/**
+ * 删除定时器
+ * @param timerNum 定时器标识
+ */
+p.killGameTimer = function (timerID) {
+    for (var i = 0; i < this.timeMng.length; ++i) {
+        if (this.timeMng[i].key == timerID) {
+            clearTimeout(this.timeMng[i].value);
+            this.timeMng.splice(i, 1);
+            break;
+        }
+    }
+};
+
+/**
+ *清除所有定时器
+ */
+p.clearAllTimer = function () {
+    for (var i = 0; i < this.timeMng.length; ++i) {
+        clearTimeout(this.timeMng[i].value);
+    }
+    this.timeMng.length = 0;
+};
+
 /**
  * 结束游戏
  * @param gameStatus 为游戏状态
@@ -326,6 +406,13 @@ p.onEventSocketFrame = function (subCMD, data, userItem) {
         case gameCMD.SUB_GF_USER_READY:
             var chairID = userItem.getChairID();
 
+            
+            if (userItem.getUserStatus() == gameConst.US_READY) {
+                return true;
+            }
+
+            console.log("接收玩家准备好的消息:chairID", chairID);
+
             if (this.getTableUserItem(chairID) != userItem) {
                 return false;
             }
@@ -542,7 +629,8 @@ p.checkTableUsersScore = function () {
     for (var i = 0; i < this.gamePlayerCount; ++i) {
         this.checkUserScore(i);
     }
-
+    // 顺便把几秒钟后所有人都要准备加在这里
+    this.onReadyCountDown();
     return true;
 };
 
